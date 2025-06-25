@@ -40,7 +40,7 @@ jobs:
           # 生成时间戳
           Set-TimeZone "China Standard Time"
           $date = Get-Date -Format "yyyyMMdd-HHmmss-UTCK"
-          $date = $date -replace '[+]', 'Plus'
+          $date = $date -replace '[+]', 'Plus' -replace '[:]', '_'
           $sha = "$env:GITHUB_SHA".Substring(0,7)
           
           # 写入环境变量
