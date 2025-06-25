@@ -52,10 +52,14 @@ jobs:
           # 确保 dist 目录存在
           $distDir = "dist"
           New-Item -ItemType Directory -Path $distDir -Force
+          
+          $targetDir = "target"
+          $debugDir = Join-Path $targetDir "debug"
+          $releaseDir = Join-Path $targetDir "release"
 
           # 构建产物路径（使用 Join-Path 避免路径拼接错误）
-          $debugSrc = Join-Path "target" "debug" "${env:BINARY_NAME}.exe"
-          $releaseSrc = Join-Path "target" "release" "${env:BINARY_NAME}.exe"
+          $debugSrc = Join-Path $debugDir "${env:BINARY_NAME}.exe"
+          $releaseSrc = Join-Path $releaseDir "${env:BINARY_NAME}.exe"
 
           # 文件名格式：branch-YYYYMMDD-SHA-type.exe
           $debugName = "${env:BRANCH_NAME}-${env:BUILD_DATE}-${env:GIT_SHA}-debug.exe"
@@ -75,8 +79,8 @@ jobs:
           Rename-Item -Path $debugSrc -NewName $debugName
           Rename-Item -Path $releaseSrc -NewName $releaseName
 
-          Move-Item -Path $debugName -Destination $distDir
-          Move-Item -Path $releaseName -Destination $distDir
+          Move-Item -Path $debugDir\$debugName -Destination $distDir
+          Move-Item -Path $releaseDir\$releaseName -Destination $distDir
 
           # 写入环境变量
           echo "DEBUG_FILENAME=$debugName" >> $env:GITHUB_ENV
