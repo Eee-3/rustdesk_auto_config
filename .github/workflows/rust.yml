@@ -109,8 +109,8 @@ jobs:
             🌿 分支：${{ github.ref_name }}
             
             🔗 下载最新构建产物：
-            - [Debug 版本](${{ github.repository }}/releases/download/auto-build-${{ env.BRANCH_NAME }}/${{ env.DEBUG_FILENAME }})
-            - [Release 版本](${{ github.repository }}/releases/download/auto-build-${{ env.BRANCH_NAME }}/${{ env.RELEASE_FILENAME }})
+            - [Debug 版本](https://github.com/${{ github.repository }}/releases/download/auto-build-${{ env.BRANCH_NAME }}/${{ env.DEBUG_FILENAME }})
+            - [Release 版本](https://github.com/${{ github.repository }}/releases/download/auto-build-${{ env.BRANCH_NAME }}/${{ env.RELEASE_FILENAME }})
             
             📄 完整构建日志：${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           prerelease: true
