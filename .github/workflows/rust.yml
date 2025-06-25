@@ -99,7 +99,7 @@ jobs:
         with:
           # 每个分支使用独立 tag，如 auto-build-feature_test
           tag_name: auto-build-${{ env.BRANCH_NAME }}
-          name: 🚀 ${{ env.PROJECT_NAME }} Auto-Build (${{ env.BRANCH_NAME }}) - ${{ env.BUILD_DATE }}
+          name: 🚀 ${{ env.PROJECT_NAME }} Auto-Build (${{ env.BRANCH_NAME }})
           body: |
             📦 自动构建版本 - ${{ github.sha }}
             
