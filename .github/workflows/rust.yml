@@ -1,4 +1,4 @@
-name: Rust CI/CD (Per Branch)
+name: Rust CI/CD
 
 on:
   push:
@@ -92,18 +92,18 @@ jobs:
           name: builds-${{ env.BRANCH_NAME }}-${{ env.BUILD_DATE }}-${{ env.GIT_SHA }}
           path: dist/
 
-      - name: 🪄 创建或更新预发布版本 (per branch)
+      - name: 🪄 创建或更新预发布版本
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # 每个分支使用独立 tag，如 auto-build-feature_test
           tag_name: auto-build-${{ env.BRANCH_NAME }}
-          name: 🚀 ${{ env.PROJECT_NAME }} Auto-Build (${{ env.BRANCH_NAME }}) - ${{ env.BUILD_DATE }}-${{ env.GIT_SHA }}
+          name: 🚀 ${{ env.PROJECT_NAME }} Auto-Build (${{ env.BRANCH_NAME }}) - ${{ env.BUILD_DATE }}
           body: |
             📦 自动构建版本 - ${{ github.sha }}
             
-            📅 构建时间：$(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+            📅 构建时间：${{ env.BUILD_DATE }}
             
             🌿 分支：${{ github.ref_name }}
             
