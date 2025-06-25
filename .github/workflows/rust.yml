@@ -38,7 +38,7 @@ jobs:
           $safeBranch = $branch -replace '[\\/]', '_'
           
           # 生成时间戳
-          $date = Get-Date -Format "yyyyMMdd"
+          $date = Get-Date -Format "yyyyMMdd-HHmmss"
           $sha = "$env:GITHUB_SHA".Substring(0,7)
           
           # 写入环境变量
