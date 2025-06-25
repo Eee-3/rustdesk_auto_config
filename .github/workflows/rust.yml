@@ -39,8 +39,7 @@ jobs:
           
           # 生成时间戳
           Set-TimeZone "China Standard Time"
-          $date = Get-Date -Format "yyyyMMdd-HHmmss-UTCK"
-          $date = $date -replace '[+]', 'Plus' -replace '[:]', '_'
+          $date = Get-Date -Format "yyyyMMdd-HHmmss"
           $sha = "$env:GITHUB_SHA".Substring(0,7)
           
           # 写入环境变量
@@ -105,7 +104,7 @@ jobs:
           body: |
             📦 自动构建版本 - ${{ github.sha }}
             
-            📅 构建时间：${{ env.BUILD_DATE }}
+            📅 构建时间：${{ env.BUILD_DATE }} UTC+8
             
             🌿 分支：${{ github.ref_name }}
             
