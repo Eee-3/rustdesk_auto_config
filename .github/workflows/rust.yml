@@ -49,22 +49,36 @@ jobs:
       - name: 📁 重命名并整理构建产物
         shell: pwsh
         run: |
+          # 确保 dist 目录存在
           $distDir = "dist"
           New-Item -ItemType Directory -Path $distDir -Force
-          
-          $debugSrc = "target\debug\${env:BINARY_NAME}.exe"
-          $releaseSrc = "target\release\${env:BINARY_NAME}.exe"
-          
+
+          # 构建产物路径（使用 Join-Path 避免路径拼接错误）
+          $debugSrc = Join-Path "target" "debug" "${env:BINARY_NAME}.exe"
+          $releaseSrc = Join-Path "target" "release" "${env:BINARY_NAME}.exe"
+
           # 文件名格式：branch-YYYYMMDD-SHA-type.exe
           $debugName = "${env:BRANCH_NAME}-${env:BUILD_DATE}-${env:GIT_SHA}-debug.exe"
           $releaseName = "${env:BRANCH_NAME}-${env:BUILD_DATE}-${env:GIT_SHA}-release.exe"
-          
+
+          # 检查文件是否存在
+          if (-Not (Test-Path $debugSrc)) {
+            Write-Error "Debug binary not found at $debugSrc"
+            exit 1
+          }
+          if (-Not (Test-Path $releaseSrc)) {
+            Write-Error "Release binary not found at $releaseSrc"
+            exit 1
+          }
+
+          # 重命名并移动文件
           Rename-Item -Path $debugSrc -NewName $debugName
           Rename-Item -Path $releaseSrc -NewName $releaseName
-          
+
           Move-Item -Path $debugName -Destination $distDir
           Move-Item -Path $releaseName -Destination $distDir
-          
+
+          # 写入环境变量
           echo "DEBUG_FILENAME=$debugName" >> $env:GITHUB_ENV
           echo "RELEASE_FILENAME=$releaseName" >> $env:GITHUB_ENV
 
