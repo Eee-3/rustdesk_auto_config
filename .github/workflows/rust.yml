@@ -86,11 +86,11 @@ jobs:
           echo "DEBUG_FILENAME=$debugName" >> $env:GITHUB_ENV
           echo "RELEASE_FILENAME=$releaseName" >> $env:GITHUB_ENV
 
-      - name: 📁 上传构建产物到Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: builds-${{ env.BRANCH_NAME }}-${{ env.BUILD_DATE }}-${{ env.GIT_SHA }}
-          path: dist/
+#      - name: 📁 上传构建产物到Artifacts
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: builds-${{ env.BRANCH_NAME }}-${{ env.BUILD_DATE }}-${{ env.GIT_SHA }}
+#          path: dist/
 
       - name: 🪄 创建或更新预发布版本
         uses: softprops/action-gh-release@v2
