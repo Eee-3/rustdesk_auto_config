@@ -9,7 +9,7 @@ use toml_edit::{DocumentMut, value};
 #[derive(Debug, Deserialize)]
 struct Config {
     installer_filename: String,
-    server_address: String,
+    // server_address: String,
     server_host: String,
     key: String,
 }
@@ -52,7 +52,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     debug!("content: {}", content);
     let mut doc = content.parse::<DocumentMut>()?;
     debug!("{:#?}", doc);
-    doc["rendezvous_server"] = value(&config.server_address);
+    // doc["rendezvous_server"] = value(&config.server_address);
     doc["options"]["custom-rendezvous-server"] = value(&config.server_host);
     doc["options"]["stop-service"] = value("Y");
     doc["options"]["key"] = value(&config.key);
@@ -91,7 +91,7 @@ fn install_rustdesk(config: &Config) -> Result<(), Box<dyn std::error::Error>> {
     let status = Command::new("cmd")
         .arg("/c")
         .arg(&install_command)
-        .arg("&pause")
+        // .arg("&pause")
         .status()?;
     if !status.success() {
         error!("Failed to install Rustdesk: {}", status);
