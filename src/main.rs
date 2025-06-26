@@ -39,8 +39,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("The config file: {}", config_file.display());
 
     info!("Killing Rustdesk...");
-    let status = Command::new("cmd")
-        .arg("/c taskkill /f /im rustdesk.exe")
+    let status = Command::new("powershell")
+        .arg("-c kill -Force -Name rustdesk")
+        .show(false)
         .status()?;
     if !status.success() {
         error!("Failed to kill Rustdesk: {}", status);
@@ -86,12 +87,13 @@ fn install_rustdesk(config: &Config) -> Result<(), Box<dyn std::error::Error>> {
     let current_dir = std::env::current_dir()?;
     info!("Current dir: {}", current_dir.display());
     // let install_command = format!(r#"cd /d "{}" && "{}" --silent-install"#, current_dir.display(),config.installer_filename);
-    let install_command = format!(r#"cd /d {} && {} --silent-install"#, current_dir.display(),config.installer_filename);
+    let install_command = format!(r#"cd {} ; {} --silent-install"#, current_dir.display(),config.installer_filename);
     debug!("install_command: {}", install_command);
-    let status = Command::new("cmd")
-        .arg("/c")
+    let status = Command::new("powershell")
+        .arg("-c")
         .arg(&install_command)
-        // .arg("&pause")
+        .show(false)
+        // .arg("; pause")
         .status()?;
     if !status.success() {
         error!("Failed to install Rustdesk: {}", status);
