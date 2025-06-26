@@ -85,7 +85,7 @@ fn install_rustdesk(config: &Config) -> Result<(), Box<dyn std::error::Error>> {
     info!("Installing Rustdesk from: {}", config.installer_filename);
     let current_dir = std::env::current_dir()?;
     info!("Current dir: {}", current_dir.display());
-    let install_command = format!(r#"cd "{}" && {}" --silent-install"#, current_dir.display(),config.installer_filename);
+    let install_command = format!(r#"cd "{}" && "{}" --silent-install"#, current_dir.display(),config.installer_filename);
     let status = Command::new("cmd")
         .arg("/c")
         .arg(&install_command)
