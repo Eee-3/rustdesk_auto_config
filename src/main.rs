@@ -23,7 +23,7 @@ fn load_config() -> Result<Config, Box<dyn std::error::Error>> {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init_from_env(
-        env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "debug"),
+        env_logger::Env::default().filter_or(env_logger::DEFAULT_FILTER_ENV, "info"),
     );
 
     // 加载配置文件
@@ -40,7 +40,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     info!("Killing Rustdesk...");
     let status = Command::new("powershell")
-        .arg("-c kill -Force -Name rustdesk")
+        .arg("-c").arg("kill -Force -Name rustdesk")
         .show(false)
         .status()?;
     if !status.success() {
@@ -73,6 +73,7 @@ fn install_service() -> Result<(), Box<dyn std::error::Error>> {
     info!("The rustdesk exe path: {}", rustdesk_exe_path.display());
     let status = Command::new(rustdesk_exe_path)
         .arg("--install-service")
+        .show(false)
         .status()?;
     if !status.success() {
         error!("Failed to Install Service: {}", status);
@@ -93,17 +94,24 @@ fn install_rustdesk(config: &Config) -> Result<(), Box<dyn std::error::Error>> {
         .arg("-c")
         .arg(&install_command)
         .show(false)
-        // .arg("; pause")
         .status()?;
     if !status.success() {
         error!("Failed to install Rustdesk: {}", status);
         return Err("Failed to install Rustdesk".into());
     }
     info!("Waiting for 10 seconds for Rustdesk to install...");
-    sleep(Duration::from_secs(10));
+    for i in (1..=10).rev() {
+        info!("{}", i);
+        sleep(Duration::from_secs(1));
+    }
+    // sleep(Duration::from_secs(10));
     info!("Installing Rustdesk Service...");
     install_service()?;
     info!("Waiting for 10 seconds for Rustdesk Service to install...");
-    sleep(Duration::from_secs(10));
+    for i in (1..=10).rev() {
+        info!("{}", i);
+        sleep(Duration::from_secs(1));
+    }
+    // sleep(Duration::from_secs(10));
     Ok(())
 }
